@@ -1,22 +1,63 @@
----
-title: Introduction
-section_title: Introduction
-type: introduction
-layout: docs
-order: 1
-parent_section: docs
-section_order: 1
-installation: true
-examples:
-  - title: Hello, World!
-    src: https://glitch.com/edit/#!/aframe?path=index.html
----
+---<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <title>مخيم فلكي افتراضي</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+  <style>
+    body { margin:0; }
+    #infoPanel {
+      position:absolute; top:20px; left:20px;
+      background:rgba(0,0,0,0.7); color:white;
+      padding:10px; font-family:Arial; max-width:300px;
+    }
+  </style>
+</head>
+<body>
+<div id="infoPanel">
+  <h2>معلومات المخيم</h2>
+  <p>انقر على التلسكوب لمشاهدة معلومات الرصد.</p>
+</div>
 
-[three.js]: https://threejs.org
+<a-scene>
+  <!-- الأرض -->
+  <a-plane position="0 0 0" rotation="-90 0 0" width="50" height="50" color="#228B22"></a-plane>
 
-## Getting Started
+  <!-- خيام المخيم -->
+  <a-box position="5 1 5" depth="3" height="2" width="3" color="#ff6347"></a-box>
+  <a-box position="-5 1 -5" depth="3" height="2" width="3" color="#ff8c00"></a-box>
 
-[glitch]: http://glitch.com/~aframe
+  <!-- تلسكوبات -->
+  <a-cylinder id="telescope1" position="0 1 0" radius="0.2" height="2" color="#5555ff"
+              event-set__click="_event: click; color: #ffff00"></a-cylinder>
+  <a-cylinder id="telescope2" position="8 1 -3" radius="0.2" height="2" color="#5555ff"
+              event-set__click="_event: click; color: #ffff00"></a-cylinder>
+
+  <!-- السماء -->
+  <a-sky color="#000000"></a-sky>
+
+  <!-- نجوم عشوائية -->
+  <a-entity id="stars">
+    <a-sphere v-for="i in 200" :position="`${Math.random()*50-25} ${Math.random()*25+5} ${Math.random()*50-25}`" 
+              radius="0.1" color="#ffffff"></a-sphere>
+  </a-entity>
+
+  <!-- كاميرا مع تحكم -->
+  <a-entity camera look-controls position="0 2 10"></a-entity>
+</a-scene>
+
+<script>
+  // تفاعل مع التلسكوب
+  document.querySelector('#telescope1').addEventListener('click', () => {
+    document.getElementById('infoPanel').innerHTML = "<h2>تلسكوب 1</h2><p>رصد الأبراج والكواكب مع دليل فلكي.</p>";
+  });
+  document.querySelector('#telescope2').addEventListener('click', () => {
+    document.getElementById('infoPanel').innerHTML = "<h2>تلسكوب 2</h2><p>رصد المذنبات والنجوم المتساقطة.</p>";
+  });
+</script>
+</body>
+</html>
 
 A-Frame can be developed from a plain HTML file without having to install
 anything. A great way to try out A-Frame is to **[remix the starter example on
